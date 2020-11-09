@@ -12,6 +12,7 @@ namespace CreditCards.UITests
 		private const string HomePageTitle = "Home Page - Credit Cards";
 		private const string AboutPage = "http://localhost:44108/Home/About";
 		private const string AboutPageTitle = "About - Credit Cards";
+	
 
 		[Fact]
 		[Trait("Category", "Smoke")]
@@ -36,10 +37,14 @@ namespace CreditCards.UITests
 			using (IWebDriver driver = new ChromeDriver("."))
 			{
 				driver.Navigate().GoToUrl(HomePageUrl);
+				//IWebElement initialContext = driver.FindElement(By.Id("GenerationToken"));
+                string initialTokenText = driver.FindElement(By.Id("GenerationToken")).Text;
 				DemoHelper.Pause();
 				driver.Navigate().Refresh();
+				string refreshTokenText = driver.FindElement(By.Id("GenerationToken")).Text;
 				Assert.Equal(HomePageTitle, driver.Title);
 				Assert.Equal(HomePageUrl, driver.Url);
+				Assert.NotEqual(initialTokenText, refreshTokenText);
 			}
 		
 		}
@@ -51,13 +56,16 @@ namespace CreditCards.UITests
 			using (IWebDriver driver = new ChromeDriver("."))
 			{
 				driver.Navigate().GoToUrl(HomePageUrl);
+				string initalTokenText = driver.FindElement(By.Id("GenerationToken")).Text;
 				DemoHelper.Pause();
 				driver.Navigate().GoToUrl(AboutPage);
 				DemoHelper.Pause();
 				driver.Navigate().Back();
+				string refreshTokenText = driver.FindElement(By.Id("GenerationToken")).Text;
 				DemoHelper.Pause();
 				Assert.Equal(HomePageTitle, driver.Title);
 				Assert.Equal(HomePageUrl, driver.Url);
+				Assert.NotEqual(initalTokenText, refreshTokenText);
 			}
 		}
 
@@ -77,9 +85,25 @@ namespace CreditCards.UITests
 				DemoHelper.Pause();
 				Assert.Equal(AboutPage,driver.Url);
 				Assert.Equal(AboutPageTitle,driver.Title);
+			
 			}
 		
 		}
 
+        [Fact]
+		[Trait("Category", "Smoke")]
+
+		public void DisplayProducts()
+		{
+			using (IWebDriver driver = new ChromeDriver(".")) 
+			{
+				driver.Navigate().GoToUrl(HomePageUrl);
+				string firstProductName = driver.FindElement(By.TagName("td")).Text;
+				Assert.Equal("Easy Credit Card", firstProductName);
+			}
+		}
+
 	}
+
+		
 }
