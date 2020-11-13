@@ -93,7 +93,7 @@ namespace CreditCards.UITests
         [Fact]
 		[Trait("Category", "Smoke")]
 
-		public void DisplayProducts()
+		public void DisplayProductsByHtml()
 		{
 			using (IWebDriver driver = new ChromeDriver(".")) 
 			{
