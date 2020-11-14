@@ -220,9 +220,7 @@ namespace CreditCards.UITests
                 WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(35));
                 IWebElement clickApply = wait.Until(ExpectedConditions.ElementToBeClickable(By.ClassName("customer-service-apply-now")));
                 clickApply.Click();   
-            
-            }
-            
+            } 
         }
 
     }
