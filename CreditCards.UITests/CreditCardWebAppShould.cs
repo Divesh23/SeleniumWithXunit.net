@@ -3,6 +3,7 @@ using Xunit;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace CreditCards.UITests
 {
@@ -100,6 +101,25 @@ namespace CreditCards.UITests
 				driver.Navigate().GoToUrl(HomePageUrl);
 				string firstProductName = driver.FindElement(By.TagName("td")).Text;
 				Assert.Equal("Easy Credit Card", firstProductName);
+			}
+		}
+
+		[Fact]
+		[Trait("Category", "Smoke")]
+
+		public void DisplayMultipleProductsByHtml()
+		{
+			using (IWebDriver driver = new ChromeDriver("."))
+			{
+				driver.Navigate().GoToUrl(HomePageUrl);
+				ReadOnlyCollection<IWebElement> productelements = driver.FindElements(By.TagName("td"));
+				Assert.Equal("Easy Credit Card", productelements[0].Text);
+				Assert.Equal("20% APR", productelements[1].Text);
+				Assert.Equal("Silver Credit Card", productelements[2].Text);
+				Assert.Equal("18% APR",productelements[3].Text);
+				Assert.Equal("Gold Credit Card", productelements[4].Text);
+				Assert.Equal("17% APR", productelements[5].Text);
+				
 			}
 		}
 
