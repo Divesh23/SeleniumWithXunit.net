@@ -219,9 +219,46 @@ namespace CreditCards.UITests
 
                 WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(35));
                 IWebElement clickApply = wait.Until(ExpectedConditions.ElementToBeClickable(By.ClassName("customer-service-apply-now")));
-                clickApply.Click();   
-            } 
+                clickApply.Click();
+            }
         }
 
+        [Fact]
+        [Trait("Category", "Application")]
+        public void EnterValuesForForm()
+        {
+            using (IWebDriver driver = new ChromeDriver("."))
+            {
+                driver.Navigate().GoToUrl(ApplyUrl);
+                driver.FindElement(By.Id("FirstName")).SendKeys("Divesh");
+                driver.FindElement(By.Id("LastName")).SendKeys("David");
+                driver.FindElement(By.Id("FrequentFlyerNumber")).SendKeys("1234-T");
+                driver.FindElement(By.Name("Age")).SendKeys("30");
+                driver.FindElement(By.Id("GrossAnnualIncome")).SendKeys("85000");
+                driver.FindElement(By.Id("Single")).Click(); 
+                DemoHelper.Pause(5000);
+                IWebElement mainOption = driver.FindElement(By.Id("BusinessSource"));
+                SelectElement eachValue = new SelectElement(mainOption);
+                //To View All Options 
+                foreach (IWebElement options in eachValue.Options )
+                {
+                    output.WriteLine($"Value:{options.GetAttribute("value")} Text:{options.Text}");
+                
+                }
+                Assert.Equal("I'd Rather Not Say",eachValue.SelectedOption.Text);
+                Assert.Equal(5,eachValue.Options.Count);
+                //Selecting the option by value
+                eachValue.SelectByValue("Internet");
+                DemoHelper.Pause();
+                //Selecting the option by Text
+                eachValue.SelectByText("Word of Mouth");
+                DemoHelper.Pause();
+                //Selecting the option by Index
+                eachValue.SelectByIndex(4);
+                DemoHelper.Pause();
+                driver.FindElement(By.Id("TermsAccepted")).Click();
+                DemoHelper.Pause();
+            }
+        }
     }
 }
