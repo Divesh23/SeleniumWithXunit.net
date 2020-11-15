@@ -32,6 +32,33 @@ namespace CreditCards.UITests
 
 		[Fact]
 		[Trait("Category", "Smoke")]
+		public void BrowserManipulation()
+		{
+			using (IWebDriver driver = new ChromeDriver("."))
+			{
+
+				driver.Navigate().GoToUrl(HomePageUrl);
+				DemoHelper.Pause(3000);
+				driver.Manage().Window.Maximize();
+				DemoHelper.Pause(3000);
+				driver.Manage().Window.Minimize();
+				DemoHelper.Pause(3000);
+				driver.Manage().Window.Size = new System.Drawing.Size(300,400);
+				DemoHelper.Pause(3000);
+				driver.Manage().Window.Position = new System.Drawing.Point(1,1);
+				DemoHelper.Pause(3000);
+				driver.Manage().Window.Position = new System.Drawing.Point(100,100);
+				DemoHelper.Pause(3000);
+				driver.Manage().Window.Position = new System.Drawing.Point(200,200);
+				DemoHelper.Pause(3000);
+				driver.Manage().Window.Maximize();
+				DemoHelper.Pause(3000);
+			}
+
+		}
+
+		[Fact]
+		[Trait("Category", "Smoke")]
 
 		public void ReloadPage() 
 		{
