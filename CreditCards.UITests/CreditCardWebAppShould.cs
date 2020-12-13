@@ -150,6 +150,23 @@ namespace CreditCards.UITests
 			}
 		}
 
+
+		[Fact]
+		[Trait("Category", "Smoke")]
+
+		public void OpenContactLinkInNewTab()
+		{
+			using (IWebDriver driver = new ChromeDriver("."))
+			{
+				driver.Navigate().GoToUrl(HomePageUrl);
+				driver.FindElement(By.Id("ContactFooter")).Click();
+                ReadOnlyCollection<string> alltabs = driver.WindowHandles;
+				string HomeTab = alltabs[0];
+				string ContactTab = alltabs[1];
+				Assert.EndsWith("/Home/Contact",driver.Url);
+
+			}
+		}
 	}
 
 		
