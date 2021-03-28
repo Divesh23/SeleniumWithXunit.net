@@ -4,6 +4,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using OpenQA.Selenium.Support.UI;
 
 namespace CreditCards.UITests
 {
@@ -13,7 +14,7 @@ namespace CreditCards.UITests
 		private const string HomePageTitle = "Home Page - Credit Cards";
 		private const string AboutPage = "http://localhost:44108/Home/About";
 		private const string AboutPageTitle = "About - Credit Cards";
-	
+
 
 		[Fact]
 		[Trait("Category", "Smoke")]
@@ -21,7 +22,7 @@ namespace CreditCards.UITests
 		{
 			using (IWebDriver driver = new ChromeDriver("."))
 			{
-				
+
 				driver.Navigate().GoToUrl(HomePageUrl);
 				DemoHelper.Pause(3000);
 				Assert.Equal(HomePageTitle, driver.Title);
@@ -43,13 +44,13 @@ namespace CreditCards.UITests
 				DemoHelper.Pause(3000);
 				driver.Manage().Window.Minimize();
 				DemoHelper.Pause(3000);
-				driver.Manage().Window.Size = new System.Drawing.Size(300,400);
+				driver.Manage().Window.Size = new System.Drawing.Size(300, 400);
 				DemoHelper.Pause(3000);
-				driver.Manage().Window.Position = new System.Drawing.Point(1,1);
+				driver.Manage().Window.Position = new System.Drawing.Point(1, 1);
 				DemoHelper.Pause(3000);
-				driver.Manage().Window.Position = new System.Drawing.Point(100,100);
+				driver.Manage().Window.Position = new System.Drawing.Point(100, 100);
 				DemoHelper.Pause(3000);
-				driver.Manage().Window.Position = new System.Drawing.Point(200,200);
+				driver.Manage().Window.Position = new System.Drawing.Point(200, 200);
 				DemoHelper.Pause(3000);
 				driver.Manage().Window.Maximize();
 				DemoHelper.Pause(3000);
@@ -60,13 +61,13 @@ namespace CreditCards.UITests
 		[Fact]
 		[Trait("Category", "Smoke")]
 
-		public void ReloadPage() 
+		public void ReloadPage()
 		{
 			using (IWebDriver driver = new ChromeDriver("."))
 			{
 				driver.Navigate().GoToUrl(HomePageUrl);
 				//IWebElement initialContext = driver.FindElement(By.Id("GenerationToken"));
-                string initialTokenText = driver.FindElement(By.Id("GenerationToken")).Text;
+				string initialTokenText = driver.FindElement(By.Id("GenerationToken")).Text;
 				DemoHelper.Pause();
 				driver.Navigate().Refresh();
 				string refreshTokenText = driver.FindElement(By.Id("GenerationToken")).Text;
@@ -74,11 +75,11 @@ namespace CreditCards.UITests
 				Assert.Equal(HomePageUrl, driver.Url);
 				Assert.NotEqual(initialTokenText, refreshTokenText);
 			}
-		
+
 		}
 
 		[Fact]
-		[Trait("Category","Smoke")]
+		[Trait("Category", "Smoke")]
 		public void ReloadPageOnBack()
 		{
 			using (IWebDriver driver = new ChromeDriver("."))
@@ -111,19 +112,19 @@ namespace CreditCards.UITests
 				DemoHelper.Pause();
 				driver.Navigate().Forward();
 				DemoHelper.Pause();
-				Assert.Equal(AboutPage,driver.Url);
-				Assert.Equal(AboutPageTitle,driver.Title);
-			
+				Assert.Equal(AboutPage, driver.Url);
+				Assert.Equal(AboutPageTitle, driver.Title);
+
 			}
-		
+
 		}
 
-        [Fact]
+		[Fact]
 		[Trait("Category", "Smoke")]
 
 		public void DisplayProductsByHtml()
 		{
-			using (IWebDriver driver = new ChromeDriver(".")) 
+			using (IWebDriver driver = new ChromeDriver("."))
 			{
 				driver.Navigate().GoToUrl(HomePageUrl);
 				string firstProductName = driver.FindElement(By.TagName("td")).Text;
@@ -143,10 +144,10 @@ namespace CreditCards.UITests
 				Assert.Equal("Easy Credit Card", productelements[0].Text);
 				Assert.Equal("20% APR", productelements[1].Text);
 				Assert.Equal("Silver Credit Card", productelements[2].Text);
-				Assert.Equal("18% APR",productelements[3].Text);
+				Assert.Equal("18% APR", productelements[3].Text);
 				Assert.Equal("Gold Credit Card", productelements[4].Text);
 				Assert.Equal("17% APR", productelements[5].Text);
-				
+
 			}
 		}
 
@@ -160,14 +161,62 @@ namespace CreditCards.UITests
 			{
 				driver.Navigate().GoToUrl(HomePageUrl);
 				driver.FindElement(By.Id("ContactFooter")).Click();
-                ReadOnlyCollection<string> alltabs = driver.WindowHandles;
-				string HomeTab = alltabs[0];
-				string ContactTab = alltabs[1];
-				Assert.EndsWith("/Home/Contact",driver.Url);
+				ReadOnlyCollection<string> alltabs = driver.WindowHandles;
+				string homeTab = alltabs[0];
+				string contactTab = alltabs[1];
+				driver.SwitchTo().Window(contactTab);
+				Assert.EndsWith("/Home/Contact", driver.Url);
+			}
+		}
 
+		[Fact]
+		[Trait("Category", "Smoke")]
+		public void ValidateAlertBox()
+		{
+			using (IWebDriver driver = new ChromeDriver("."))
+			{
+				driver.Navigate().GoToUrl(HomePageUrl);
+				driver.FindElement(By.Id("LiveChat")).Click();
+				//if no wait was enforced
+				//IAlert alert =  driver.SwitchTo().Alert();
+				WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+				IAlert alert = wait.Until(ExpectedConditions.AlertIsPresent());
+				Assert.Equal("Live chat is currently closed.", alert.Text);
+				//alert.Accept();
+			}
+
+		}
+
+		[Fact]
+		[Trait("Category", "Smoke")]
+
+		public void CancelAlertOnAlertBox()
+		{
+			using (IWebDriver driver = new ChromeDriver("."))
+			{
+				driver.Navigate().GoToUrl(HomePageUrl);
+				driver.FindElement(By.Id("LearnAboutUs")).Click();
+				WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+				IAlert alert = wait.Until(ExpectedConditions.AlertIsPresent());
+				alert.Dismiss();
+				Assert.Equal(HomePageTitle, driver.Title);
+			}
+		}
+
+		[Fact]
+		[Trait("Category", "Smoke")]
+
+		public void AccecptAlertOnAlertBox()
+		{
+			using (IWebDriver driver = new ChromeDriver("."))
+			{
+				driver.Navigate().GoToUrl(HomePageUrl);
+				driver.FindElement(By.Id("LearnAboutUs")).Click();
+				WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+				IAlert alert = wait.Until(ExpectedConditions.AlertIsPresent());
+				alert.Accept();
+				Assert.Equal(AboutPageTitle,driver.Title);
 			}
 		}
 	}
-
-		
 }
