@@ -218,5 +218,22 @@ namespace CreditCards.UITests
 				Assert.Equal(AboutPageTitle,driver.Title);
 			}
 		}
+
+		[Fact]
+		[Trait("Category", "Smoke")]
+		public void CheckCookie()
+		{
+			using (IWebDriver driver = new ChromeDriver("."))
+			{
+				driver.Navigate().GoToUrl(HomePageUrl);
+				driver.Manage().Cookies.AddCookie(new Cookie("alertCookie","true"));
+				driver.Navigate().Refresh();
+                ReadOnlyCollection<IWebElement> alert = driver.FindElements(By.Id("CookiesBeingUsed"));
+				//Assert.Empty(alert);
+				Cookie cookie = driver.Manage().Cookies.GetCookieNamed("alertCookie");
+				Assert.Equal("true",cookie.Value);
+			}
+		
+		}
 	}
 }
