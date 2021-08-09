@@ -10,8 +10,8 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Selenium.Chrome.WebDriver" Version="85.0.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="89.0.4389.2300" />
-    <PackageReference Include="WebDriver.ChromeDriver.win32" Version="90.0.4430.24" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="92.0.4515.10700" />
+    <PackageReference Include="WebDriver.ChromeDriver.win32" Version="92.0.4515.107" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="Views\Shared\Error.cshtml">
