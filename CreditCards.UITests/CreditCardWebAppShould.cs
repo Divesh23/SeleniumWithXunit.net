@@ -288,7 +288,8 @@ namespace CreditCards.UITests
 		{
 			using (IWebDriver driver = new ChromeDriver("."))
 			{
-				driver.Navigate().GoToUrl(HomePageUrl);
+				var homePage = new HomePage(driver);
+				homePage.NavigateTo();
 				ITakesScreenshot screenshotdriver = (ITakesScreenshot)driver;
 				Screenshot screenshot = screenshotdriver.GetScreenshot();
 				screenshot.SaveAsFile("homepage.bmp",ScreenshotImageFormat.Bmp);
