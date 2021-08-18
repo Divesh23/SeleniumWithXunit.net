@@ -8,6 +8,7 @@ using OpenQA.Selenium.Support.UI;
 using ApprovalTests.Reporters;
 using System.IO;
 using ApprovalTests;
+using CreditCards.UITests.PageObjectModels;
 
 namespace CreditCards.UITests
 {
@@ -143,7 +144,9 @@ namespace CreditCards.UITests
 			using (IWebDriver driver = new ChromeDriver("."))
 			{
 				driver.Navigate().GoToUrl(HomePageUrl);
-				ReadOnlyCollection<IWebElement> productelements = driver.FindElements(By.TagName("td"));
+				var homePage = new HomePage(driver);
+
+				ReadOnlyCollection<IWebElement> productelements = homePage.ProductCells;
 				Assert.Equal("Easy Credit Card", productelements[0].Text);
 				Assert.Equal("20% APR", productelements[1].Text);
 				Assert.Equal("Silver Credit Card", productelements[2].Text);
