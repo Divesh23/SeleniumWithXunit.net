@@ -88,16 +88,15 @@ namespace CreditCards.UITests
 		{
 			using (IWebDriver driver = new ChromeDriver("."))
 			{
-				driver.Navigate().GoToUrl(HomePageUrl);
-				string initalTokenText = driver.FindElement(By.Id("GenerationToken")).Text;
-				DemoHelper.Pause();
+				var homePage = new HomePage(driver);
+				homePage.NavigateTo();
+				//public static string GenerateToken = driver.FindElement(By.Id("GenerationToken")).Text
+				string initalTokenText = homePage.GenerateToken;
 				driver.Navigate().GoToUrl(AboutPage);
-				DemoHelper.Pause();
 				driver.Navigate().Back();
-				string refreshTokenText = driver.FindElement(By.Id("GenerationToken")).Text;
-				DemoHelper.Pause();
-				Assert.Equal(HomePageTitle, driver.Title);
-				Assert.Equal(HomePageUrl, driver.Url);
+				homePage.EnsurePageLoads();
+                string refreshTokenText = homePage.GenerateToken;
+				homePage.EnsurePageLoads();
 				Assert.NotEqual(initalTokenText, refreshTokenText);
 			}
 		}

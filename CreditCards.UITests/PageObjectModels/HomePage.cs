@@ -44,6 +44,8 @@ namespace CreditCards.UITests.PageObjectModels
             }        
         }
 
+        public string GenerateToken => Driver.FindElement(By.Id("GenerationToken")).Text;
+
         public void  NavigateTo()
         {
             Driver.Navigate().GoToUrl(homeUrl);
