@@ -170,8 +170,9 @@ namespace CreditCards.UITests
 		{
 			using (IWebDriver driver = new ChromeDriver("."))
 			{
-				driver.Navigate().GoToUrl(HomePageUrl);
-				driver.FindElement(By.Id("ContactFooter")).Click();
+				var homePage = new HomePage(driver);
+				homePage.NavigateTo();
+				homePage.ClickContactFooterLink();
 				ReadOnlyCollection<string> alltabs = driver.WindowHandles;
 				string homeTab = alltabs[0];
 				string contactTab = alltabs[1];

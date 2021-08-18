@@ -60,5 +60,6 @@ namespace CreditCards.UITests.PageObjectModels
             }
         }
 
+        public void ClickContactFooterLink() => Driver.FindElement(By.Id("ContactFooter")).Click();
     }
 }
