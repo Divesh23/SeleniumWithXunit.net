@@ -187,18 +187,21 @@ namespace CreditCards.UITests
 		{
 			using (IWebDriver driver = new ChromeDriver("."))
 			{
-				driver.Navigate().GoToUrl(HomePageUrl);
-				driver.FindElement(By.Id("LiveChat")).Click();
+				var homePage = new HomePage(driver);
+				homePage.NavigateTo();
+				homePage.ClickLiveChatLink();
+
 				//if no wait was enforced
 				//IAlert alert =  driver.SwitchTo().Alert();
+
 				WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
 				IAlert alert = wait.Until(ExpectedConditions.AlertIsPresent());
 				Assert.Equal("Live chat is currently closed.", alert.Text);
-				//alert.Accept();
+				alert.Accept();
 			}
 
 		}
-
+		 
 		[Fact]
 		[Trait("Category", "Smoke")]
 
@@ -206,12 +209,13 @@ namespace CreditCards.UITests
 		{
 			using (IWebDriver driver = new ChromeDriver("."))
 			{
-				driver.Navigate().GoToUrl(HomePageUrl);
-				driver.FindElement(By.Id("LearnAboutUs")).Click();
+				var homePage = new HomePage(driver);
+				homePage.NavigateTo();
+				homePage.ClickLearnAboutUsLink();
 				WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
 				IAlert alert = wait.Until(ExpectedConditions.AlertIsPresent());
 				alert.Dismiss();
-				Assert.Equal(HomePageTitle, driver.Title);
+				homePage.EnsurePageLoads();
 			}
 		}
 

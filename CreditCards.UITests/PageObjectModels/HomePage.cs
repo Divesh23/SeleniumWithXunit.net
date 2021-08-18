@@ -51,9 +51,19 @@ namespace CreditCards.UITests.PageObjectModels
             Driver.Navigate().GoToUrl(homeUrl);
             EnsurePageLoads();
         }
-        public void EnsurePageLoads()
+        public void EnsurePageLoads(bool isCheckStart=true)
         {
-            bool isLoaded = (Driver.Title == homeTitle) && (Driver.Url==homeUrl);
+            bool urlIsCorrect;
+            if (isCheckStart)
+            {
+                urlIsCorrect = Driver.Url.StartsWith(homeUrl);
+            }
+            else
+            {
+                urlIsCorrect = Driver.Url == homeUrl;        
+            }
+            
+            bool isLoaded = (Driver.Title == homeTitle) && urlIsCorrect;
             if (!isLoaded)
             {
                 throw new Exception($"Failed to load Page. Page URL is '{Driver.Url}' and Page Source:\r\n{Driver.PageSource}");
@@ -61,5 +71,9 @@ namespace CreditCards.UITests.PageObjectModels
         }
 
         public void ClickContactFooterLink() => Driver.FindElement(By.Id("ContactFooter")).Click();
+
+        public void ClickLiveChatLink() => Driver.FindElement(By.Id("LiveChat")).Click();
+
+        public void ClickLearnAboutUsLink() => Driver.FindElement(By.Id("LearnAboutUs")).Click();
     }
 }
