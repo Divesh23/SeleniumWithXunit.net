@@ -146,14 +146,20 @@ namespace CreditCards.UITests
 				driver.Navigate().GoToUrl(HomePageUrl);
 				var homePage = new HomePage(driver);
 
-				ReadOnlyCollection<IWebElement> productelements = homePage.ProductCells;
-				Assert.Equal("Easy Credit Card", productelements[0].Text);
-				Assert.Equal("20% APR", productelements[1].Text);
+				//if using WebElements
+				/*ReadOnlyCollection<IWebElement> productelements = homePage.ProductCells;
 				Assert.Equal("Silver Credit Card", productelements[2].Text);
 				Assert.Equal("18% APR", productelements[3].Text);
 				Assert.Equal("Gold Credit Card", productelements[4].Text);
-				Assert.Equal("17% APR", productelements[5].Text);
-
+				Assert.Equal("17% APR", productelements[5].Text);*/
+				
+				//If using Lists
+				Assert.Equal("Easy Credit Card",homePage.Products[0].name);
+				Assert.Equal("20% APR", homePage.Products[0].interestRate);
+				Assert.Equal("Silver Credit Card", homePage.Products[1].name);
+				Assert.Equal("18% APR", homePage.Products[1].interestRate);
+				Assert.Equal("Gold Credit Card", homePage.Products[2].name);
+				Assert.Equal("17% APR",homePage.Products[2].interestRate);
 			}
 		}
 
