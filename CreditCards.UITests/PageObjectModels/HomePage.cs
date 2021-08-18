@@ -8,7 +8,7 @@ namespace CreditCards.UITests.PageObjectModels
     class HomePage
     {
         private readonly IWebDriver Driver;
-
+        private const string homeUrl = "http://localhost:44108/";
         public HomePage(IWebDriver driver)
         {
             Driver = driver;
@@ -40,6 +40,11 @@ namespace CreditCards.UITests.PageObjectModels
 
                 return products.AsReadOnly();
             }        
+        }
+
+        public void  NavigateTo()
+        {
+            Driver.Navigate().GoToUrl(homeUrl);
         }
 
     }
