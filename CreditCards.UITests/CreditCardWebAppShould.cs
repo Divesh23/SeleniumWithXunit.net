@@ -241,13 +241,24 @@ namespace CreditCards.UITests
 		{
 			using (IWebDriver driver = new ChromeDriver("."))
 			{
-				driver.Navigate().GoToUrl(HomePageUrl);
+				var homePage = new HomePage(driver);
+				homePage.NavigateTo();
 				driver.Manage().Cookies.AddCookie(new Cookie("alertCookie", "true"));
 				driver.Navigate().Refresh();
-				ReadOnlyCollection<IWebElement> alert = driver.FindElements(By.Id("CookiesBeingUsed"));
+
+				//If using non Page Mdel
+				//ReadOnlyCollection<IWebElement> alert = driver.FindElements(By.Id("CookiesBeingUsed"));
+				//Cookie cookie = driver.Manage().Cookies.GetCookieNamed("alertCookie");
+				//Assert.Equal("true", cookie.Value);
 				//Assert.Empty(alert);
-				Cookie cookie = driver.Manage().Cookies.GetCookieNamed("alertCookie");
-				Assert.Equal("true", cookie.Value);
+
+				//Using Page Model
+				driver.Manage().Cookies.GetCookieNamed("alertCookie");
+				Assert.True(homePage.isCookiePresent);
+
+				driver.Manage().Cookies.DeleteCookieNamed("alertCookie");
+				driver.Navigate().Refresh();
+				Assert.True(homePage.isCookiePresent);//Product Bug
 			}
 
 		}

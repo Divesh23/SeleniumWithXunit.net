@@ -3,12 +3,14 @@ using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace CreditCards.UITests.PageObjectModels
 {
     class HomePage
     {
         private readonly IWebDriver Driver;
+        public bool isCookiePresent => Driver.FindElements(By.Id("CookiesBeingUsed")).Any();
         private const string homeUrl = "http://localhost:44108/";
         private const string homeTitle = "Home Page - Credit Cards";
         public HomePage(IWebDriver driver)
