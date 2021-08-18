@@ -1,5 +1,6 @@
 ﻿
 using OpenQA.Selenium;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -9,6 +10,7 @@ namespace CreditCards.UITests.PageObjectModels
     {
         private readonly IWebDriver Driver;
         private const string homeUrl = "http://localhost:44108/";
+        private const string homeTitle = "Home Page - Credit Cards";
         public HomePage(IWebDriver driver)
         {
             Driver = driver;
@@ -45,6 +47,15 @@ namespace CreditCards.UITests.PageObjectModels
         public void  NavigateTo()
         {
             Driver.Navigate().GoToUrl(homeUrl);
+            EnsurePageLoads();
+        }
+        public void EnsurePageLoads()
+        {
+            bool isLoaded = (Driver.Title == homeTitle) && (Driver.Url==homeUrl);
+            if (!isLoaded)
+            {
+                throw new Exception($"Failed to load Page. Page URL is '{Driver.Url}' and Page Source:\r\n{Driver.PageSource}");
+            }
         }
 
     }
