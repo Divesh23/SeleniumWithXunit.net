@@ -22,15 +22,15 @@ namespace CreditCards.UITests
 
 		[Fact]
 		[Trait("Category", "Smoke")]
-		public void LoadApplicationPage()
+		public void LoadApplicationHomePage()
 		{
 			using (IWebDriver driver = new ChromeDriver("."))
 			{
-
-				driver.Navigate().GoToUrl(HomePageUrl);
-				DemoHelper.Pause(3000);
-				Assert.Equal(HomePageTitle, driver.Title);
-				Assert.Equal(HomePageUrl, driver.Url);
+				var homePage = new HomePage(driver);
+				homePage.NavigateTo();
+				//driver.Navigate().GoToUrl(HomePageUrl);
+				//Assert.Equal(HomePageTitle, driver.Title);
+				//Assert.Equal(HomePageUrl, driver.Url);
 			}
 
 		}
