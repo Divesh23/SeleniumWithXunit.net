@@ -1,5 +1,6 @@
 ﻿
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -83,5 +84,12 @@ namespace CreditCards.UITests.PageObjectModels
         public void ClickLiveChatLink() => Driver.FindElement(By.Id("LiveChat")).Click();
 
         public void ClickLearnAboutUsLink() => Driver.FindElement(By.Id("LearnAboutUs")).Click();
+
+        public ApplicationPage clickApplyLowRateButton()
+        {
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(1));
+            IWebElement clickApplyLink = wait.Until(ExpectedConditions.ElementToBeClickable(By.Name("ApplyLowRate")));
+            return new ApplicationPage(Driver);
+        }
     }
 }

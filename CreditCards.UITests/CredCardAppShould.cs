@@ -141,9 +141,10 @@ namespace CreditCards.UITests
         {
             using (IWebDriver driver = new ChromeDriver("."))
             {
-                driver.Navigate().GoToUrl(HomePageUrl);
-                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(1));
-                IWebElement clickApplyLink = wait.Until(ExpectedConditions.ElementToBeClickable(By.Name("ApplyLowRate")));
+                var homepage = new HomePage(driver);
+                homepage.NavigateTo();
+                ApplicationPage applicationPage = homepage.clickApplyLowRateButton();
+                applicationPage.EnsurePageLoads();
             }
         }
 
