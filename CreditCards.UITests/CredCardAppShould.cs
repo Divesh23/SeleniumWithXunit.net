@@ -227,18 +227,40 @@ namespace CreditCards.UITests
         {
             using (IWebDriver driver = new ChromeDriver("."))
             {
-                driver.Navigate().GoToUrl(ApplyUrl);
-                driver.FindElement(By.Id("FirstName")).SendKeys("Divesh");
-                driver.FindElement(By.Id("LastName")).SendKeys("David");
-                driver.FindElement(By.Id("FrequentFlyerNumber")).SendKeys("1234-T");
-                driver.FindElement(By.Name("Age")).SendKeys("30");
-                driver.FindElement(By.Id("GrossAnnualIncome")).SendKeys("85000");
-                driver.FindElement(By.Id("Single")).Click(); 
-                DemoHelper.Pause(5000);
-                IWebElement mainOption = driver.FindElement(By.Id("BusinessSource"));
-                SelectElement eachValue = new SelectElement(mainOption);
-                //To View All Options 
-                foreach (IWebElement options in eachValue.Options )
+                const string fname = "Divesh";
+                const string lname = "David";
+                const string flyerNumber = "1234-T";
+                const string age = "30";
+                const string income = "100000";
+                const string status = "Single";
+                const string option = "Word of Mouth";
+                const string decision = "AutoAccepted";
+                var applicationPage = new ApplicationPage(driver);
+                applicationPage.NavigateTo();
+
+
+                applicationPage.EnterFirstName(fname);
+                applicationPage.EnterLastName(lname);
+                applicationPage.EnterFlyerNumber(flyerNumber);
+                applicationPage.EnterAge(age);
+                applicationPage.EnterGrossAnnualIncome(income);
+                applicationPage.EnterStatus(status);
+                applicationPage.SelectOption(option);
+                applicationPage.AcceptTerms();
+                applicationPage.SubmitForm();
+
+                var applicationCompletePage = new ApplicationCompletePage(driver);
+                applicationCompletePage.EnsurePageLoads();
+                Assert.Equal(decision, applicationCompletePage.decision);
+                Assert.NotEmpty(applicationCompletePage.referenceNumber);
+                Assert.Equal($"{fname} {lname}", applicationCompletePage.fullName);
+                Assert.Equal(age, applicationCompletePage.age);
+                Assert.Equal(income, applicationCompletePage.income);
+                Assert.Equal(status, applicationCompletePage.status);
+                Assert.Equal(option, applicationCompletePage.source);
+
+                //To View All Options in select 
+                /*foreach (IWebElement options in eachValue.Options )
                 {
                     output.WriteLine($"Value:{options.GetAttribute("value")} Text:{options.Text}");
                 
@@ -256,20 +278,20 @@ namespace CreditCards.UITests
                 DemoHelper.Pause();
                 driver.FindElement(By.Id("TermsAccepted")).Click();
                 DemoHelper.Pause();
-                //Submit by clcik
+                //Submit by click
                 //driver.FindElement(By.Id("SubmitApplication")).Click();
                 //Submit by function
-                driver.FindElement(By.Id("Single")).Submit();
-                DemoHelper.Pause();
+                //driver.FindElement(By.Id("Single")).Submit();*/
 
-                Assert.Equal("Application Complete - Credit Cards", driver.Title);
-                Assert.Equal("ReferredToHuman", driver.FindElement(By.Id("Decision")).Text);
-                Assert.NotEmpty(driver.FindElement(By.Id("ReferenceNumber")).Text);
-                Assert.Equal("Divesh David", driver.FindElement(By.Id("FullName")).Text);
-                Assert.Equal("30", driver.FindElement(By.Id("Age")).Text);
-                Assert.Equal("85000", driver.FindElement(By.Id("Income")).Text);
-                Assert.Equal("Single", driver.FindElement(By.Id("RelationshipStatus")).Text);
-                Assert.Equal("TV", driver.FindElement(By.Id("BusinessSource")).Text);
+
+                /* Assert.Equal("Application Complete - Credit Cards", driver.Title);
+                 Assert.Equal("ReferredToHuman", driver.FindElement(By.Id("Decision")).Text);
+                 Assert.NotEmpty(driver.FindElement(By.Id("ReferenceNumber")).Text);
+                 Assert.Equal("Divesh David", driver.FindElement(By.Id("FullName")).Text);
+                 Assert.Equal("30", driver.FindElement(By.Id("Age")).Text);
+                 Assert.Equal("85000", driver.FindElement(By.Id("Income")).Text);
+                 Assert.Equal("Single", driver.FindElement(By.Id("RelationshipStatus")).Text);
+                 Assert.Equal("TV", driver.FindElement(By.Id("BusinessSource")).Text);*/
 
             }
         }

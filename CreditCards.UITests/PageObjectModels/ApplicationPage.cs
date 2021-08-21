@@ -47,28 +47,26 @@ namespace CreditCards.UITests.PageObjectModels
         public void EnterFirstName(string firstname) => Driver.FindElement(By.Id("FirstName")).SendKeys(firstname);
 
 
-        public void EnterLastName(string lastname)=>Driver.FindElement(By.Id("LastName")).SendKeys("Divesh");
+        public void EnterLastName(string lastname)=>Driver.FindElement(By.Id("LastName")).SendKeys(lastname);
         public void EnterFlyerNumber(string num)=>Driver.FindElement(By.Id("FrequentFlyerNumber")).SendKeys(num);
         public void EnterAge(string age)=>Driver.FindElement(By.Name("Age")).SendKeys(age);
         public void EnterGrossAnnualIncome(string income)=>Driver.FindElement(By.Id("GrossAnnualIncome")).SendKeys(income);
         public void EnterStatus(string status)=>Driver.FindElement(By.Id(status)).Click();
 
-        public void SelectOption(string text)
+        public void SelectOption(string value)
         {
             IWebElement mainOption = Driver.FindElement(By.Id("BusinessSource"));
-            SelectElement eachValue = new SelectElement(mainOption);
-            //To View All Options 
-            foreach (IWebElement options in eachValue.Options)
-            {
-                output.WriteLine($"Value:{options.GetAttribute("value")} Text:{options.Text}");
-
-            }
-            eachValue.DeselectByText(text);
+            SelectElement source = new SelectElement(mainOption);
+            source.SelectByText(value);
 
         }
 
         public void AcceptTerms()=> Driver.FindElement(By.Id("TermsAccepted")).Click();
 
-        public void SubmitForm()=> Driver.FindElement(By.Id("Single")).Submit();
+        public ApplicationCompletePage SubmitForm() 
+        { 
+            Driver.FindElement(By.Id("Single")).Submit();
+            return new ApplicationCompletePage(Driver);
+        }
     }
 }
