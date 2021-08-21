@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using CreditCards.UITests.PageObjectModels;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -26,14 +27,10 @@ namespace CreditCards.UITests
         {
             using (IWebDriver driver = new ChromeDriver("."))
             {
-                driver.Navigate().GoToUrl(HomePageUrl);
-                IWebElement clickApplyNowButton = driver.FindElement(By.Name("ApplyLowRate"));
-                clickApplyNowButton.Click();
-                DemoHelper.Pause();
-                Assert.Equal(ApplyUrl, driver.Url);
-                Assert.Equal(CreditCardPageTile, driver.Title);
-
-
+                var homepage = new HomePage(driver);
+                homepage.NavigateTo();
+                ApplicationPage applicationPage = homepage.clickApplyNowButton();
+                applicationPage.EnsurePageLoads();
             }
         }
 

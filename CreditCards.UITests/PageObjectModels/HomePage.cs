@@ -46,6 +46,12 @@ namespace CreditCards.UITests.PageObjectModels
             }        
         }
 
+        public ApplicationPage clickApplyNowButton()
+        {
+            Driver.FindElement(By.Name("ApplyLowRate")).Click();
+            return new ApplicationPage(Driver);
+        }
+
         public string GenerateToken => Driver.FindElement(By.Id("GenerationToken")).Text;
 
         public void  NavigateTo()
