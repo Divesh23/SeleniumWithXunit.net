@@ -68,5 +68,18 @@ namespace CreditCards.UITests.PageObjectModels
             Driver.FindElement(By.Id("Single")).Submit();
             return new ApplicationCompletePage(Driver);
         }
+
+        public ReadOnlyCollection<string> ValidationErrorMessages
+        {
+            get
+            {
+                return Driver.FindElements(By.CssSelector(".validation-summary-errors > ul > li")).Select(x => x.Text).ToList().AsReadOnly();
+
+            }
+            
+
+        }
+
+        public void clearAge()=> Driver.FindElement(By.Name("Age")).Clear();
     }
 }
