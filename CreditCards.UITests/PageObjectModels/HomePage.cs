@@ -89,6 +89,7 @@ namespace CreditCards.UITests.PageObjectModels
         {
             WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(1));
             IWebElement clickApplyLink = wait.Until(ExpectedConditions.ElementToBeClickable(By.Name("ApplyLowRate")));
+            clickApplyLink.Click();
             return new ApplicationPage(Driver);
         }
     }

@@ -8,16 +8,26 @@ using Xunit.Abstractions;
 
 namespace CreditCards.UITests
 {
-    public class CredCardAppShould
+    public class CredCardAppShould : IClassFixture<ChromeDriverFixture>
     {
         private const string ApplyUrl = "http://localhost:44108/Apply";
         private const string HomePageUrl = "http://localhost:44108/";
         private const string CreditCardPageTile = "Credit Card Application - Credit Cards";
-        private readonly ITestOutputHelper output;
 
-        public CredCardAppShould(ITestOutputHelper output)
+        public ChromeDriverFixture ChromeDriverFixture;
+
+      // private readonly ITestOutputHelper output;
+
+     /* public CredCardAppShould(ITestOutputHelper output)
         {
             this.output = output;
+        }*/
+
+        public CredCardAppShould(ChromeDriverFixture chromeDriverFixture)
+        {
+            ChromeDriverFixture = chromeDriverFixture;
+            ChromeDriverFixture.Driver.Manage().Cookies.DeleteAllCookies();
+            ChromeDriverFixture.Driver.Navigate().GoToUrl("about:blank");
         }
 
 
@@ -25,13 +35,11 @@ namespace CreditCards.UITests
         [Trait("Category", "Application")]
         public void VerifyPageOnClickingApplyNow()
         {
-            using (IWebDriver driver = new ChromeDriver("."))
-            {
-                var homepage = new HomePage(driver);
-                homepage.NavigateTo();
-                ApplicationPage applicationPage = homepage.clickApplyNowButton();
-                applicationPage.EnsurePageLoads();
-            }
+            var homepage = new HomePage(ChromeDriverFixture.Driver);
+            homepage.NavigateTo();
+            ApplicationPage applicationPage = homepage.clickApplyNowButton();
+            applicationPage.EnsurePageLoads();
+            
         }
 
         [Fact]
@@ -139,73 +147,14 @@ namespace CreditCards.UITests
         [Trait("Category", "Application")]
         public void VerifyPageWithPreBuiltFunctions()
         {
-            using (IWebDriver driver = new ChromeDriver("."))
-            {
-                var homepage = new HomePage(driver);
+                var homepage = new HomePage(ChromeDriverFixture.Driver);
                 homepage.NavigateTo();
                 ApplicationPage applicationPage = homepage.clickApplyLowRateButton();
                 applicationPage.EnsurePageLoads();
-            }
+            
         }
 
-        [Fact]
-        [Trait("Category", "Application")]
-        public void VerifyPageWithImplicitWaitFailingTest()
-        {
-            using (IWebDriver driver = new ChromeDriver("."))
-            {
-                try
-                {
-                    output.WriteLine($"{DateTime.Now.ToLongTimeString()} Setting Implicit Wait");
-                    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(35);
-                    output.WriteLine($"{DateTime.Now.ToLongTimeString()} Navigate to Home Page");
-                    driver.Navigate().GoToUrl(HomePageUrl);
-                    DemoHelper.Pause();
-                    output.WriteLine($"{DateTime.Now.ToLongTimeString()} Finding Element");
-                    IWebElement clickApplyNowButton = driver.FindElement(By.ClassName("customer-service-apply-now"));
-                    output.WriteLine($"{DateTime.Now.ToLongTimeString()} Found Element Displayed:{clickApplyNowButton.Displayed} and Enabled:{clickApplyNowButton.Enabled}");
-                    output.WriteLine($"{DateTime.Now.ToLongTimeString()} Clicking Element");
-                    clickApplyNowButton.Click();
-                    DemoHelper.Pause();
-                }
-                catch (Exception e)
-                {
-                    output.WriteLine($"{DateTime.Now.ToLongTimeString()} {e} Reason for Failure: Button is still not Enabled or displayed");
-                }
-
-            }
-
-        }
-
-        [Fact]
-        [Trait("Category", "Application")]
-        public void ExplicitWaitsUnreachableElementFailingTest()
-        {
-            using (IWebDriver driver = new ChromeDriver("."))
-            {
-                try
-                {
-                    output.WriteLine($"{DateTime.Now.ToLongTimeString()} Navigate to Home Page");
-                    driver.Navigate().GoToUrl(HomePageUrl);
-                    DemoHelper.Pause();
-                    output.WriteLine($"{DateTime.Now.ToLongTimeString()} Finding Element");
-                    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(35));
-                    IWebElement clickApplyNowButton = wait.Until((d) => d.FindElement(By.ClassName("customer-service-apply-now")));
-
-                    output.WriteLine($"{DateTime.Now.ToLongTimeString()} Found Element Displayed:{clickApplyNowButton.Displayed} and Enabled:{clickApplyNowButton.Enabled}");
-                    output.WriteLine($"{DateTime.Now.ToLongTimeString()} Clicking Element");
-                    clickApplyNowButton.Click();
-                    DemoHelper.Pause();
-                    Assert.Equal(ApplyUrl, driver.Url);
-                    Assert.Equal(CreditCardPageTile, driver.Title);
-                }
-                catch (Exception e)
-                {
-                    output.WriteLine($"{e} Reason for Failure: Button is still not Enabled or displayed");
-                }
-            }
-
-        }
+        
 
         [Fact]
         [Trait("Category", "Application")]
@@ -300,10 +249,6 @@ namespace CreditCards.UITests
         [Trait("Category", "Application")]
         public void FixErrorsOnForm()
         {
-            const String firstName = "Divesh";
-            const String invalidAge = "12";
-            const String validAge = "30";
-            
             using (IWebDriver driver = new ChromeDriver("."))
             {
 

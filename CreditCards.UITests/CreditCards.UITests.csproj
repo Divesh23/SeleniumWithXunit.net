@@ -101,10 +101,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChromeDriverFixture.cs" />
     <Compile Include="CredCardAppShould.cs" />
     <Compile Include="CreditCardWebAppShould.cs" />
     <Compile Include="DemoHelper.cs" />
     <Compile Include="JavaScriptMethods.cs" />
+    <Compile Include="OutputClassTests.cs" />
     <Compile Include="PageObjectModels\ApplicationComplete.cs" />
     <Compile Include="PageObjectModels\ApplicationPage.cs" />
     <Compile Include="PageObjectModels\HomePage.cs" />
